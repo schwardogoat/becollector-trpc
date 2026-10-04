@@ -12,7 +12,21 @@ await connectDB()
 
 const app = express();
 
-app.use(cors({origin: env.FRONTEND_URL, credentials: true, methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS",],allowedHeaders: ["Content-Type","Authorization",],}));
+const allowedOrigin = env.FRONTEND_URL.replace(/\/$/, "");
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || origin.replace(/\/$/, "") === allowedOrigin) {
+      callback(null, true);
+      return;
+    }
+
+    callback(new Error("Origin is not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
