@@ -58,6 +58,24 @@ export const formsRouter = router({
             throw error;
         }
     }),
+    getOnePublic: publicProcedure
+    .input(
+        z.object({
+            id: z.string()
+        })
+    )
+    .query(async ({ input }) => {
+        try {
+            const form = await Form.findOne({
+                _id: input.id
+            }).lean();
+
+            return form;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    }),
     create: protectedProcedure.mutation( async({ ctx }) => {
         try{
             const org = ctx.session.user.org;
