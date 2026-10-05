@@ -30,7 +30,7 @@ app.use(cors({
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 app.use(
   "/api/trpc",
