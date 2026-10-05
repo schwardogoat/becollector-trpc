@@ -12,6 +12,12 @@ export const auth = betterAuth({
             sameSite: "none",
             secure: true,
         },
+        ipAddress: {
+            ipAddressHeaders: [
+                "x-forwarded-for",
+                "x-real-ip",
+            ],
+        },
     },
     //VORSSICHT ENDE
     database: mongodbAdapter(db),
